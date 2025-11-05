@@ -14,4 +14,7 @@ class BirthdayForm(forms.Form):
     )
     birthday = forms.DateField(
         label='Дата рождения',
+        # Указываем, что виджет для ввода даты должен быть с типом date.
+        widget=forms.DateInput(attrs={'type': 'date'}),
     )
+ 
