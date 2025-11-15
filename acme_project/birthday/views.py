@@ -71,4 +71,6 @@ class BirthdayListView(ListView):
     paginate_by = 10
 
 class BirthdayDetailView(DetailView):
-    model = Birthday 
+    model = Birthday
+    template_name_suffix = '_detail' 
+
