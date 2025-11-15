@@ -1,6 +1,7 @@
-from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import (
+    CreateView, DeleteView, DetailView, ListView, UpdateView
+)
 from django.urls import reverse_lazy
 
 from .forms import BirthdayForm
@@ -37,21 +38,7 @@ def birthday(request, pk=None):
         context.update({'birthday_countdown': birthday_countdown})
     return render(request, 'birthday/birthday.html', context)
 
-def delete_birthday(request, pk):
-    # Получаем объект модели или выбрасываем 404 ошибку.
-    instance = get_object_or_404(Birthday, pk=pk)
-    # В форму передаём только объект модели;
-    # передавать в форму параметры запроса не нужно.
-    form = BirthdayForm(instance=instance)
-    context = {'form': form}
-    # Если был получен POST-запрос...
-    if request.method == 'POST':
-        # ...удаляем объект:
-        instance.delete()
-        # ...и переадресовываем пользователя на страницу со списком записей.
-        return redirect('birthday:list')
-    # Если был получен GET-запрос — отображаем форму.
-    return render(request, 'birthday/birthday.html', context)
+
 
 class BirthdayMixin:
     model = Birthday
@@ -62,6 +49,8 @@ class BirthdayFormMixin:
     form_class = BirthdayForm
     template_name = 'birthday/birthday.html'
 
+class BirthdayDetailView(DetailView):
+    model = Birthday
 
 class BirthdayCreateView(BirthdayMixin, BirthdayFormMixin, CreateView):
     pass
@@ -72,7 +61,7 @@ class BirthdayUpdateView(BirthdayMixin, BirthdayFormMixin, UpdateView):
 
 
 class BirthdayDeleteView(BirthdayMixin, DeleteView):
-    pass 
+    pass
 
 # Наследуем класс от встроенного ListView:
 class BirthdayListView(ListView):
