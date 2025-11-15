@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from django.urls import reverse_lazy
 
 from .forms import BirthdayForm
@@ -53,12 +53,21 @@ def delete_birthday(request, pk):
     # Если был получен GET-запрос — отображаем форму.
     return render(request, 'birthday/birthday.html', context)
 
-class BirthdayCreateView(CreateView):
+# Создаём миксин.
+class BirthdayMixin:
     model = Birthday
-    # Указываем имя формы:
     form_class = BirthdayForm
     template_name = 'birthday/birthday.html'
     success_url = reverse_lazy('birthday:list')
+
+# Добавляем миксин первым по списку родительских классов.
+class BirthdayCreateView(BirthdayMixin, CreateView):
+    # Не нужно описывать атрибуты: все они унаследованы от BirthdayMixin.
+    pass
+
+class BirthdayUpdateView(BirthdayMixin, UpdateView):
+    # И здесь все атрибуты наследуются от BirthdayMixin.
+    pass
 
 # Наследуем класс от встроенного ListView:
 class BirthdayListView(ListView):
@@ -68,3 +77,5 @@ class BirthdayListView(ListView):
     ordering = 'id'
     # ...и даже настройки пагинации:
     paginate_by = 10
+
+
