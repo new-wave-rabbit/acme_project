@@ -54,17 +54,11 @@ def delete_birthday(request, pk):
     return render(request, 'birthday/birthday.html', context)
 
 class BirthdayCreateView(CreateView):
-    # Указываем модель, с которой работает CBV...
     model = Birthday
-    # Этот класс сам может создать форму на основе модели!
-    # Нет необходимости отдельно создавать форму через ModelForm.
-    # Указываем поля, которые должны быть в форме:
-    fields = '__all__'
-    # Явным образом указываем шаблон:
+    # Указываем имя формы:
+    form_class = BirthdayForm
     template_name = 'birthday/birthday.html'
-    # Указываем namespace:name страницы, куда будет перенаправлен пользователь
-    # после создания объекта:
-    success_url = reverse_lazy('birthday:list') 
+    success_url = reverse_lazy('birthday:list')
 
 # Наследуем класс от встроенного ListView:
 class BirthdayListView(ListView):
