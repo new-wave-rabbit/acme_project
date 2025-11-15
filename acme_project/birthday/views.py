@@ -53,21 +53,26 @@ def delete_birthday(request, pk):
     # Если был получен GET-запрос — отображаем форму.
     return render(request, 'birthday/birthday.html', context)
 
-# Создаём миксин.
 class BirthdayMixin:
     model = Birthday
-    form_class = BirthdayForm
-    template_name = 'birthday/birthday.html'
     success_url = reverse_lazy('birthday:list')
 
-# Добавляем миксин первым по списку родительских классов.
-class BirthdayCreateView(BirthdayMixin, CreateView):
-    # Не нужно описывать атрибуты: все они унаследованы от BirthdayMixin.
+
+class BirthdayFormMixin:
+    form_class = BirthdayForm
+    template_name = 'birthday/birthday.html'
+
+
+class BirthdayCreateView(BirthdayMixin, BirthdayFormMixin, CreateView):
     pass
 
-class BirthdayUpdateView(BirthdayMixin, UpdateView):
-    # И здесь все атрибуты наследуются от BirthdayMixin.
+
+class BirthdayUpdateView(BirthdayMixin, BirthdayFormMixin, UpdateView):
     pass
+
+
+class BirthdayDeleteView(BirthdayMixin, DeleteView):
+    pass 
 
 # Наследуем класс от встроенного ListView:
 class BirthdayListView(ListView):
@@ -77,7 +82,3 @@ class BirthdayListView(ListView):
     ordering = 'id'
     # ...и даже настройки пагинации:
     paginate_by = 10
-
-class BirthdayDeleteView(DeleteView):
-    model = Birthday
-    success_url = reverse_lazy('birthday:list')
