@@ -49,8 +49,6 @@ class BirthdayFormMixin:
     form_class = BirthdayForm
     template_name = 'birthday/birthday.html'
 
-class BirthdayDetailView(DetailView):
-    model = Birthday
 
 class BirthdayCreateView(BirthdayMixin, BirthdayFormMixin, CreateView):
     pass
@@ -71,3 +69,6 @@ class BirthdayListView(ListView):
     ordering = 'id'
     # ...и даже настройки пагинации:
     paginate_by = 10
+
+class BirthdayDetailView(DetailView):
+    model = Birthday 
