@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import ListView
+from django.views.generic import CreateView, ListView
+from django.urls import reverse_lazy
 
 from .forms import BirthdayForm
 from .models import Birthday
@@ -51,6 +52,19 @@ def delete_birthday(request, pk):
         return redirect('birthday:list')
     # Если был получен GET-запрос — отображаем форму.
     return render(request, 'birthday/birthday.html', context)
+
+class BirthdayCreateView(CreateView):
+    # Указываем модель, с которой работает CBV...
+    model = Birthday
+    # Этот класс сам может создать форму на основе модели!
+    # Нет необходимости отдельно создавать форму через ModelForm.
+    # Указываем поля, которые должны быть в форме:
+    fields = '__all__'
+    # Явным образом указываем шаблон:
+    template_name = 'birthday/birthday.html'
+    # Указываем namespace:name страницы, куда будет перенаправлен пользователь
+    # после создания объекта:
+    success_url = reverse_lazy('birthday:list') 
 
 # Наследуем класс от встроенного ListView:
 class BirthdayListView(ListView):
