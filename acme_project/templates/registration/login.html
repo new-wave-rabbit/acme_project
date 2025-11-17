@@ -1,40 +1,45 @@
+<!-- templates/registration/login.html -->
 {% extends "base.html" %}
+<!-- Загружаем библиотеку для работы со стилями Bootstrap. -->
+{% load django_bootstrap5 %}
 
 {% block content %}
-
-<!-- Этот блок мы уберём, в нашей форме ошибки выводятся внутри формы. -->
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-
-{% if next %}
+  <!-- Если в запросе передан GET-параметр с указанием страницы, 
+    куда надо перейти после входа. -->
+  {% if next %}
+    <!-- Если пользователь уже залогинен, но не обладает нужными правами. -->
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+      <p>
+        У вашего аккаунта нет доступа к этой странице.
+        Чтобы продолжить, войдите в систему с аккаунтом,
+        у которого есть доступ.
+      </p>
     {% else %}
-    <p>Please login to see this page.</p>
+      <p>
+        Пожалуйста, войдите в систему,
+        чтобы просматривать эту страницу.
+      </p>
     {% endif %}
-{% endif %}
+  {% endif %}
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" value="login">
-<!-- Этот тег надо будет перенести в нашу форму. -->
-<input type="hidden" name="next" value="{{ next }}">
-</form>
-
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
+  <div class="card col-4 m-3">
+    <div class="card-header">
+      Войти в систему
+    </div>
+    <div class="card-body">
+      <!-- В атрибуте action указываем адрес, куда должен отправляться запрос. -->
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <!-- В скрытом поле передаём параметр next, 
+          это URL для переадресации после логина. -->
+        <input type="hidden" name="next" value="{{ next }}">
+        {% bootstrap_button button_type="submit" content="Войти" %}
+      </form>
+      <div>
+        <!-- Ссылка для перехода на страницу восстановления пароля. -->
+        <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+      </div>
+    </div>
+  </div>
 {% endblock %}
