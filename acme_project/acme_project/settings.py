@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'users.apps.UsersConfig',
     'django_bootstrap5',
+    "debug_toolbar",
 
 ]
 
@@ -30,7 +31,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
 
 ROOT_URLCONF = 'acme_project.urls'
 
@@ -92,7 +95,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
-AUTH_USER_MODEL = 'users.MyUser' 
+AUTH_USER_MODEL = 'users.MyUser'
 
 # Подключаем бэкенд filebased.EmailBackend:
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
@@ -103,3 +106,6 @@ LOGIN_REDIRECT_URL = 'pages:homepage'
 
 LOGIN_URL = 'login'
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

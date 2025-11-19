@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import include, path, reverse_lazy
 from django.views.generic.edit import CreateView
-
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('', include('pages.urls')),
@@ -23,4 +23,4 @@ urlpatterns = [
         ),
         name='registration',
     )
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + debug_toolbar_urls()
