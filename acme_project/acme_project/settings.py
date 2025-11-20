@@ -4,7 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-m&$lzdzkutvrbr5vt=jpm)7#g7cken_tk%($ty+w902n7wb#=e'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -115,3 +115,5 @@ LOGIN_URL = 'login'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'

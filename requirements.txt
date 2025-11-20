@@ -1,6 +1,7 @@
+Django==3.2.16
 asgiref==3.10.0
-Django==5.2.8
-django-bootstrap5==24.2
+django-bootstrap5==24.1
 pillow==10.4.0
 pytz==2025.2
 sqlparse==0.5.3
+django-debug-toolbar
