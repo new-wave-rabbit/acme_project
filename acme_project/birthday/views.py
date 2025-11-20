@@ -23,7 +23,7 @@ class BirthdayListView(ListView):
     paginate_by = 10
 
 
-class BirthdayCreateView(OnlyAuthorMixin, CreateView):
+class BirthdayCreateView(LoginRequiredMixin, CreateView):
     model = Birthday
     form_class = BirthdayForm
 
